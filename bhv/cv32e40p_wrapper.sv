@@ -13,6 +13,7 @@
 
 `ifdef CV32E40P_ASSERT_ON
   `include "cv32e40p_prefetch_controller_sva.sv"
+  `include "cv32e40p_sleep_unit_sva.sv"
 `endif
 
 `include "cv32e40p_core_log.sv"
@@ -106,6 +107,13 @@ module cv32e40p_wrapper import cv32e40p_apu_core_pkg::*;
           .PULP_OBI        ( PULP_OBI        ),
           .FIFO_ADDR_DEPTH ( FIFO_ADDR_DEPTH ))
       prefetch_controller_sva (.*);
+
+    bind cv32e40p_sleep_unit:
+      core_i.sleep_unit_i
+      cv32e40p_sleep_unit_sva
+      #(
+        .PULP_CLUSTER(PULP_CLUSTER))
+      cv32e40p_sleep_unit_sva (.*);
 
 `endif // CV32E40P_ASSERT_ON
 
